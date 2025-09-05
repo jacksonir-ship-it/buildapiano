@@ -1,31 +1,37 @@
+// Select all keys
 const keys = document.querySelectorAll('.key');
-keys.forEach((key) => {
-  key.addEventListener('click', () => playNote(key));
-});
-
-function playNote(key) {
-  const noteAudio = document.getElementById(key.dataset.note);
-  noteAudio.currentTime = 0; 
-  noteAudio.play();
-  key.classList.add('active');
-
-  noteAudio.addEventListener('ended', () => {
-    key.classList.remove('active');
-  });
-}const WHITE_KEYS = ['z','x','c','v','b','n','m'];
-const BLACK_KEYS = ['s','d','g','h','j'];
-
 const whiteKeys = document.querySelectorAll('.key.white');
 const blackKeys = document.querySelectorAll('.key.black');
 
-document.addEventListener('keydown', (e) => {
-  if(e.repeat) return; // prevents repeated sound if holding key
-  const key = e.key;
-  const whiteKeyIndex = WHITE_KEYS.indexOf(key);
-  const blackKeyIndex = BLACK_KEYS.indexOf(key);
-
-  if(whiteKeyIndex > -1) playNote(whiteKeys[whiteKeyIndex]);
-  if(blackKeyIndex > -1) playNote(blackKeys[blackKeyIndex]);
+// Mouse clicks
+keys.forEach(key => {
+  key.addEventListener('click', () => playNote(key));
 });
-git branch
 
+// Play a note
+function playNote(key) {
+  const noteAudio = document.getElementById(key.dataset.note);
+  noteAudio.currentTime = 0;   // restart sound so you can click fast
+  noteAudio.play();
+  key.classList.add('active');
+
+  // remove the "pressed" look when sound finishes
+  noteAudio.addEventListener('ended', () => {
+    key.classList.remove('active');
+  });
+}
+
+// Keyboard controls
+const WHITE_KEYS = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
+const BLACK_KEYS = ['s', 'd', 'g', 'h', 'j'];
+
+document.addEventListener('keydown', e => {
+  if (e.repeat) return; // ignore if held down
+  const key = e.key;
+
+  const whiteIndex = WHITE_KEYS.indexOf(key);
+  const blackIndex = BLACK_KEYS.indexOf(key);
+
+  if (whiteIndex > -1) playNote(whiteKeys[whiteIndex]);
+  if (blackIndex > -1) playNote(blackKeys[blackIndex]);
+});
